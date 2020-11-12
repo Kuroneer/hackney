@@ -44,13 +44,13 @@ to_binary(V) when is_binary(V) ->
 %% @doc Convert a binary string to lowercase.
 -spec to_lower(binary()|atom()|list()) -> binary().
 to_lower(L) when is_binary(L) ->
-  << << (char_to_lower(C)) >> || << C >> <= L >>;
+  << << (char_to_lower_int(C)) >> || << C >> <= L >>;
 to_lower(L) ->
   to_lower(to_binary(L)).
 
 -spec to_upper(binary()|atom()|list()) -> binary().
 to_upper(U) when is_binary(U)->
-  << << (char_to_upper(C)) >> || << C >> <= U >>;
+  << << (char_to_upper_int(C)) >> || << C >> <= U >>;
 to_upper(L) ->
   to_upper(to_binary(L)).
 
@@ -59,63 +59,71 @@ to_upper(L) ->
 %% @end
 %% We gain noticeable speed by matching each value directly.
 -spec char_to_lower(char()) -> char().
-char_to_lower($A) -> $a;
-char_to_lower($B) -> $b;
-char_to_lower($C) -> $c;
-char_to_lower($D) -> $d;
-char_to_lower($E) -> $e;
-char_to_lower($F) -> $f;
-char_to_lower($G) -> $g;
-char_to_lower($H) -> $h;
-char_to_lower($I) -> $i;
-char_to_lower($J) -> $j;
-char_to_lower($K) -> $k;
-char_to_lower($L) -> $l;
-char_to_lower($M) -> $m;
-char_to_lower($N) -> $n;
-char_to_lower($O) -> $o;
-char_to_lower($P) -> $p;
-char_to_lower($Q) -> $q;
-char_to_lower($R) -> $r;
-char_to_lower($S) -> $s;
-char_to_lower($T) -> $t;
-char_to_lower($U) -> $u;
-char_to_lower($V) -> $v;
-char_to_lower($W) -> $w;
-char_to_lower($X) -> $x;
-char_to_lower($Y) -> $y;
-char_to_lower($Z) -> $z;
-char_to_lower(Ch) -> Ch.
+char_to_lower(Ch) -> char_to_lower_int(Ch).
+
+-compile({inline,[char_to_lower_int/1]}).
+-spec char_to_lower_int(char()) -> char().
+char_to_lower_int($A) -> $a;
+char_to_lower_int($B) -> $b;
+char_to_lower_int($C) -> $c;
+char_to_lower_int($D) -> $d;
+char_to_lower_int($E) -> $e;
+char_to_lower_int($F) -> $f;
+char_to_lower_int($G) -> $g;
+char_to_lower_int($H) -> $h;
+char_to_lower_int($I) -> $i;
+char_to_lower_int($J) -> $j;
+char_to_lower_int($K) -> $k;
+char_to_lower_int($L) -> $l;
+char_to_lower_int($M) -> $m;
+char_to_lower_int($N) -> $n;
+char_to_lower_int($O) -> $o;
+char_to_lower_int($P) -> $p;
+char_to_lower_int($Q) -> $q;
+char_to_lower_int($R) -> $r;
+char_to_lower_int($S) -> $s;
+char_to_lower_int($T) -> $t;
+char_to_lower_int($U) -> $u;
+char_to_lower_int($V) -> $v;
+char_to_lower_int($W) -> $w;
+char_to_lower_int($X) -> $x;
+char_to_lower_int($Y) -> $y;
+char_to_lower_int($Z) -> $z;
+char_to_lower_int(Ch) -> Ch.
 
 %% @doc Convert [a-z] characters to uppercase.
 -spec char_to_upper(char()) -> char().
-char_to_upper($a) -> $A;
-char_to_upper($b) -> $B;
-char_to_upper($c) -> $C;
-char_to_upper($d) -> $D;
-char_to_upper($e) -> $E;
-char_to_upper($f) -> $F;
-char_to_upper($g) -> $G;
-char_to_upper($h) -> $H;
-char_to_upper($i) -> $I;
-char_to_upper($j) -> $J;
-char_to_upper($k) -> $K;
-char_to_upper($l) -> $L;
-char_to_upper($m) -> $M;
-char_to_upper($n) -> $N;
-char_to_upper($o) -> $O;
-char_to_upper($p) -> $P;
-char_to_upper($q) -> $Q;
-char_to_upper($r) -> $R;
-char_to_upper($s) -> $S;
-char_to_upper($t) -> $T;
-char_to_upper($u) -> $U;
-char_to_upper($v) -> $V;
-char_to_upper($w) -> $W;
-char_to_upper($x) -> $X;
-char_to_upper($y) -> $Y;
-char_to_upper($z) -> $Z;
-char_to_upper(Ch) -> Ch.
+char_to_upper(Ch) -> char_to_upper_int(Ch).
+
+-compile({inline,[char_to_upper_int/1]}).
+-spec char_to_upper_int(char()) -> char().
+char_to_upper_int($a) -> $A;
+char_to_upper_int($b) -> $B;
+char_to_upper_int($c) -> $C;
+char_to_upper_int($d) -> $D;
+char_to_upper_int($e) -> $E;
+char_to_upper_int($f) -> $F;
+char_to_upper_int($g) -> $G;
+char_to_upper_int($h) -> $H;
+char_to_upper_int($i) -> $I;
+char_to_upper_int($j) -> $J;
+char_to_upper_int($k) -> $K;
+char_to_upper_int($l) -> $L;
+char_to_upper_int($m) -> $M;
+char_to_upper_int($n) -> $N;
+char_to_upper_int($o) -> $O;
+char_to_upper_int($p) -> $P;
+char_to_upper_int($q) -> $Q;
+char_to_upper_int($r) -> $R;
+char_to_upper_int($s) -> $S;
+char_to_upper_int($t) -> $T;
+char_to_upper_int($u) -> $U;
+char_to_upper_int($v) -> $V;
+char_to_upper_int($w) -> $W;
+char_to_upper_int($x) -> $X;
+char_to_upper_int($y) -> $Y;
+char_to_upper_int($z) -> $Z;
+char_to_upper_int(Ch) -> Ch.
 
 join([], _Separator) ->
   <<>>;
@@ -166,7 +174,7 @@ token(Data = << C, _Rest/binary >>, Fun, _Case, Acc)
        C < 32; C =:= 127 ->
   Fun(Data, Acc);
 token(<< C, Rest/binary >>, Fun, Case = ci, Acc) ->
-  C2 = char_to_lower(C),
+  C2 = char_to_lower_int(C),
   token(Rest, Fun, Case, << Acc/binary, C2 >>);
 token(<< C, Rest/binary >>, Fun, Case, Acc) ->
   token(Rest, Fun, Case, << Acc/binary, C >>).
@@ -338,7 +346,7 @@ alpha(<<>>, Fun, Acc) ->
 alpha(<< C, Rest/binary >>, Fun, Acc)
   when C >= $a andalso C =< $z;
        C >= $A andalso C =< $Z ->
-  C2 = char_to_lower(C),
+  C2 = char_to_lower_int(C),
   alpha(Rest, Fun, << Acc/binary, C2 >>);
 alpha(Data, Fun, Acc) ->
   Fun(Data, Acc).
