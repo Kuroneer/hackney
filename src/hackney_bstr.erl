@@ -19,7 +19,10 @@
   digits/1, digits/2, digits/3,
   alpha/2,
   word/2,
-  trim/1]).
+  trim/1,
+  loren/0
+]).
+
 
 %% BEGIN: Remove when OTP 17 not officially supported
 -export([split/3]).
@@ -41,10 +44,51 @@ to_binary(V) when is_integer(V) ->
 to_binary(V) when is_binary(V) ->
   V.
 
+%% @doc Convert [A-Z] characters to lowercase.
+%% @end
+%% We gain noticeable speed by matching each value directly.
+-define(CHAR_TO_LOWER(C), case C of
+                            $A -> $a;
+                            $B -> $b;
+                            $C -> $c;
+                            $D -> $d;
+                            $E -> $e;
+                            $F -> $f;
+                            $G -> $g;
+                            $H -> $h;
+                            $I -> $i;
+                            $J -> $j;
+                            $K -> $k;
+                            $L -> $l;
+                            $M -> $m;
+                            $N -> $n;
+                            $O -> $o;
+                            $P -> $p;
+                            $Q -> $q;
+                            $R -> $r;
+                            $S -> $s;
+                            $T -> $t;
+                            $U -> $u;
+                            $V -> $v;
+                            $W -> $w;
+                            $X -> $x;
+                            $Y -> $y;
+                            $Z -> $z;
+                            Ch -> Ch
+                          end).
+
+-spec char_to_lower(char()) -> char().
+char_to_lower(C) -> ?CHAR_TO_LOWER(C).
+
+
+loren() -> <<"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.">>.
+
 %% @doc Convert a binary string to lowercase.
 -spec to_lower(binary()|atom()|list()) -> binary().
 to_lower(L) when is_binary(L) ->
-  << << (char_to_lower(C)) >> || << C >> <= L >>;
+  << <<?CHAR_TO_LOWER(C), ?CHAR_TO_LOWER(D), ?CHAR_TO_LOWER(E), ?CHAR_TO_LOWER(F)>> || << C, D, E, F >> <= L >>; %% <- complex handling of trailing byte
+  % << <<?CHAR_TO_LOWER(C)>> || << C >> <= L >>; %% <- best by 15%
 to_lower(L) ->
   to_lower(to_binary(L)).
 
@@ -55,37 +99,6 @@ to_upper(L) ->
   to_upper(to_binary(L)).
 
 
-%% @doc Convert [A-Z] characters to lowercase.
-%% @end
-%% We gain noticeable speed by matching each value directly.
--spec char_to_lower(char()) -> char().
-char_to_lower($A) -> $a;
-char_to_lower($B) -> $b;
-char_to_lower($C) -> $c;
-char_to_lower($D) -> $d;
-char_to_lower($E) -> $e;
-char_to_lower($F) -> $f;
-char_to_lower($G) -> $g;
-char_to_lower($H) -> $h;
-char_to_lower($I) -> $i;
-char_to_lower($J) -> $j;
-char_to_lower($K) -> $k;
-char_to_lower($L) -> $l;
-char_to_lower($M) -> $m;
-char_to_lower($N) -> $n;
-char_to_lower($O) -> $o;
-char_to_lower($P) -> $p;
-char_to_lower($Q) -> $q;
-char_to_lower($R) -> $r;
-char_to_lower($S) -> $s;
-char_to_lower($T) -> $t;
-char_to_lower($U) -> $u;
-char_to_lower($V) -> $v;
-char_to_lower($W) -> $w;
-char_to_lower($X) -> $x;
-char_to_lower($Y) -> $y;
-char_to_lower($Z) -> $z;
-char_to_lower(Ch) -> Ch.
 
 %% @doc Convert [a-z] characters to uppercase.
 -spec char_to_upper(char()) -> char().
