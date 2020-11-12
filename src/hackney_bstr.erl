@@ -87,8 +87,7 @@ loren() -> <<"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ei
 %% @doc Convert a binary string to lowercase.
 -spec to_lower(binary()|atom()|list()) -> binary().
 to_lower(L) when is_binary(L) ->
-  << <<?CHAR_TO_LOWER(C), ?CHAR_TO_LOWER(D), ?CHAR_TO_LOWER(E), ?CHAR_TO_LOWER(F)>> || << C, D, E, F >> <= L >>; %% <- complex handling of trailing byte
-  % << <<?CHAR_TO_LOWER(C)>> || << C >> <= L >>; %% <- best by 15%
+  << <<?CHAR_TO_LOWER(C)>> || << C >> <= L >>; %% <- best by 15%
 to_lower(L) ->
   to_lower(to_binary(L)).
 
